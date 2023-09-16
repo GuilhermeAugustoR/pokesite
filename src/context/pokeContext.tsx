@@ -9,7 +9,7 @@ const PokeContextProvider: React.FC<IProps> = ({ children }) => {
   const [pokemonList, setPokemonList] = useState([]);
   const [pokeName, setPokeName] = useState("");
   const [pokeImg, setPokeImg] = useState("");
-  const [pokeType, setPokeType] = useState("");
+  const [pokeType, setPokeType] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,10 +35,11 @@ const PokeContextProvider: React.FC<IProps> = ({ children }) => {
           // Fazer solicitação para cada Pokémon individual para obter a imagem
           const pokemonDataPromises = pageResults.map(async (pokemon: any) => {
             const pokemonResponse = await axios.get(pokemon.url);
+
             return {
               name: pokemonResponse.data.name,
               imageUrl: pokemonResponse.data.sprites.front_default,
-              type: pokemonResponse.data.types[0].type.name,
+              type: pokemonResponse.data.types,
             };
           });
 

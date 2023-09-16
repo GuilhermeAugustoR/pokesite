@@ -10,7 +10,7 @@ interface ICart {
 }
 
 const Cart = ({ name, image, type, onClick }: ICart) => {
-  const { setPokeName, setPokeImg, setPokeType } = useContext(PokeContext);
+  const { setPokeName, setPokeImg } = useContext(PokeContext);
 
   return (
     <Box
@@ -24,7 +24,6 @@ const Cart = ({ name, image, type, onClick }: ICart) => {
         onClick();
         setPokeName(name);
         setPokeImg(image);
-        setPokeType(type);
       }}
     >
       <Image src={image} alt={name} boxSize="200px" objectFit="cover" />

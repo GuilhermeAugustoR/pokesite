@@ -6,7 +6,7 @@ export interface IPokeContext {
   setPokeName: any;
   pokeImg: string;
   setPokeImg: any;
-  pokeType: string;
+  pokeType: Array<any>;
   setPokeType: any;
   pokemonList: any;
 }

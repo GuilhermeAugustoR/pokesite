@@ -1,21 +1,15 @@
-import { Stack, VStack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import Home from "./screens/Home";
 import PokeContextProvider from "./context/pokeContext";
 
 function App() {
   return (
-    <Stack
-      display="flex"
-      w="99vw"
-      h="max-content"
-      alignItems="center"
-      bg="teal.700"
-    >
-      <VStack display="flex" w="60vw">
+    <Stack display="flex" w="100%" h="100%" alignItems="center" bg="teal.700">
+      <Stack>
         <PokeContextProvider>
           <Home />
         </PokeContextProvider>
-      </VStack>
+      </Stack>
     </Stack>
   );
 }

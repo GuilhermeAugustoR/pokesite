@@ -5,41 +5,83 @@ import Cart from "../../components/Cart";
 import Modal from "../../components/Modal";
 import { PokeContext } from "../../context/pokeContext";
 import CartModal from "../../components/CartModal";
+import listPokemonService from "../../service/Pokemon/listPokemonService";
+
+interface IPokeMap {
+  name: string;
+  imageUrl: string;
+  type: any;
+}
 
 const Home = () => {
-  const { loading, pokeName, pokeImg, pokemonList, pokeType } =
-    useContext(PokeContext);
+  const { loading, pokeName, pokeImg, pokemonList } = useContext(PokeContext);
   const [showModal, setShowModal] = useState(false);
+  const [loadingSpecific, setLoadingSpecific] = useState(false);
+  const [data, setData] = useState([]);
+  const [dataAttack, setDataAttack] = useState([]);
+
+  const handlePokemonType = async (name: string) => {
+    setLoadingSpecific(true);
+    try {
+      const response = await listPokemonService.getPokemonSpecific({
+        name,
+      });
+
+      if (!response) {
+        console.log("!response", response);
+        setLoadingSpecific(false);
+        return;
+      }
+
+      setLoadingSpecific(false);
+      setData(response.stats);
+      setDataAttack(response.abilities);
+    } catch (error) {
+      console.log(error);
+      setLoadingSpecific(false);
+    }
+  };
 
   return (
-    <Stack
-      display="grid"
-      gridTemplateColumns="repeat(4, 300px)"
-      w="100%"
-      h="max-content"
-      p={5}
-    >
+    <Stack display="flex" w="100%" h="100%" p={2}>
       <Modal onOpen={showModal} onClose={() => setShowModal(false)}>
         <Stack w="100%" h="100%" justifyContent="center" alignItems="center">
-          <CartModal name={pokeName} image={pokeImg} type={pokeType} />
+          {loadingSpecific ? (
+            <Loading />
+          ) : (
+            <CartModal
+              name={pokeName}
+              image={pokeImg}
+              stats={data}
+              abilities={dataAttack}
+            />
+          )}
         </Stack>
       </Modal>
 
       {loading ? (
-        <Stack display="flex" w="60vw" h="96vh">
-          <Center w="100%" h="100%">
-            <Loading />
-          </Center>
-        </Stack>
+        <Center h="100vh">
+          <Loading />
+        </Center>
       ) : (
-        pokemonList.map((pokemon: any) => (
-          <Cart
-            name={pokemon.name}
-            image={pokemon.imageUrl}
-            type={pokemon?.type}
-            onClick={() => setShowModal(true)}
-          />
-        ))
+        <Center
+          w="fit-content"
+          display="grid"
+          gridTemplateColumns="repeat(4, 220px)"
+          gridRowGap={4}
+        >
+          {pokemonList.map(({ name, imageUrl, type }: IPokeMap) => (
+            <Cart
+              name={name}
+              image={imageUrl}
+              type={type[0]?.type?.name}
+              onClick={() => {
+                handlePokemonType(name);
+                setShowModal(true);
+              }}
+            />
+          ))}
+        </Center>
       )}
     </Stack>
   );

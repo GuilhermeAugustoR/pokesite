@@ -1,10 +1,14 @@
 import axios from "axios";
 import { api } from "../api";
 
+interface IPokemonType {
+  name: string;
+}
+
 class ListPokemonService {
-  async getPokemon() {
+  async getPokemonSpecific({ name }: IPokemonType) {
     try {
-      const response = await api.get("/pokemon");
+      const response = await api.get(`/pokemon/${name}`);
       return response.data;
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

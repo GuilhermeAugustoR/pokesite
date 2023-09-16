@@ -17,7 +17,7 @@ const Modal = ({ onOpen, onClose, children }: IModal) => {
     <>
       <CkModal isOpen={onOpen} onClose={onClose} size="md">
         <ModalOverlay />
-        <ModalContent h="500px" bg="teal.500">
+        <ModalContent h="600px" bg="teal.500">
           {/* <ModalHeader>{title}</ModalHeader> */}
           <ModalBody>{children}</ModalBody>
 
