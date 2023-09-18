@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Center, Stack } from "@chakra-ui/react";
+import { Center, Grid, Stack } from "@chakra-ui/react";
 import Loading from "../../components/Loading";
 import Cart from "../../components/Cart";
 import Modal from "../../components/Modal";
@@ -43,7 +43,7 @@ const Home = () => {
   };
 
   return (
-    <Stack display="flex" w="100%" h="100%" p={2}>
+    <Stack display="flex" w={"100%"} h="100%" p={2}>
       <Modal onOpen={showModal} onClose={() => setShowModal(false)}>
         <Stack w="100%" h="100%" justifyContent="center" alignItems="center">
           {loadingSpecific ? (
@@ -64,23 +64,20 @@ const Home = () => {
           <Loading />
         </Center>
       ) : (
-        <Center
-          w="fit-content"
-          display="grid"
-          gridTemplateColumns="repeat(4, 220px)"
-          gridRowGap={4}
-        >
-          {pokemonList.map(({ name, imageUrl, type }: IPokeMap) => (
-            <Cart
-              name={name}
-              image={imageUrl}
-              type={type[0]?.type?.name}
-              onClick={() => {
-                handlePokemonType(name);
-                setShowModal(true);
-              }}
-            />
-          ))}
+        <Center w="fit-content" display="flex">
+          <Grid templateColumns={["1fr 1fr", "1fr 1fr", "1fr 1fr 1fr ", "1fr 1fr 1fr 1fr"]} gap={6}>
+            {pokemonList.map(({ name, imageUrl, type }: IPokeMap) => (
+              <Cart
+                name={name}
+                image={imageUrl}
+                type={type[0]?.type?.name}
+                onClick={() => {
+                  handlePokemonType(name);
+                  setShowModal(true);
+                }}
+              />
+            ))}
+          </Grid>
         </Center>
       )}
     </Stack>
